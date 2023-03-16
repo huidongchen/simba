@@ -5,7 +5,7 @@ Anaconda
 ~~~~~~~~
 
 
-For first-time *conda* users, perform a one-time set up of Bioconda with the following commands:
+For first-time *conda* users, perform a one-time set up of Bioconda with the following commands::
 
     conda config --add channels defaults
     conda config --add channels bioconda
