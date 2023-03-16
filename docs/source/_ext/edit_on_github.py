@@ -32,7 +32,7 @@ def html_page_context(app, pagename, templatename, context, doctree):
                 context["conf_py_path"] = "/v1.0/"
         else:
             context["display_github"] = True
-            context["github_user"] = "pinellolab"
+            context["github_user"] = "huidongchen"
             context["github_repo"] = "simba"
             context["github_version"] = "master"
             context["conf_py_path"] = "/docs/source/"
