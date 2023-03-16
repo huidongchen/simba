@@ -20,7 +20,7 @@ import simba  # noqa: E402
 # -- Project information -----------------------------------------------------
 
 project = 'SIMBA'
-copyright = '2021, Huidong Chen'
+copyright = '2023, Huidong Chen'
 author = 'Huidong Chen'
 
 # The full version, including alpha/beta/rc tags
