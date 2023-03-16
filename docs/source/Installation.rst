@@ -4,7 +4,16 @@ Installation
 Anaconda
 ~~~~~~~~
 
-To install the `simba <https://anaconda.org/bioconda/simba>`_ package with conda, run::
+
+For first-time *conda* users, perform a one-time set up of Bioconda with the following commands:
+
+    conda config --add channels defaults
+    conda config --add channels bioconda
+    conda config --add channels conda-forge
+    conda config --set channel_priority strict
+
+
+To install `simba <https://anaconda.org/bioconda/simba>`_ with conda, run::
 
     conda install -c bioconda simba
 
