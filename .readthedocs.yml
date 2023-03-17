@@ -12,11 +12,3 @@ sphinx:
     builder: html
     configuration: docs/source/conf.py
     fail_on_warning: false
-
-python:
-    version: 3.7
-    # install:
-    # -   method: pip
-    #     path: .
-    #     extra_requirements:
-    #     -   docs
