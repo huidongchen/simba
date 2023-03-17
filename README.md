@@ -2,7 +2,7 @@
 [![CI](https://github.com/pinellolab/simba/actions/workflows/CI.yml/badge.svg)](https://github.com/pinellolab/simba/actions/workflows/CI.yml)
 [![Anaconda](https://anaconda.org/bioconda/simba/badges/version.svg)](https://anaconda.org/bioconda/simba)
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/simba/README.html)
-[![codecov](https://codecov.io/gh/pinellolab/simba/branch/master/graph/badge.svg?token=NDQJQPL18K)](https://codecov.io/gh/pinellolab/simba)
+[![codecov](https://codecov.io/gh/huidongchen/simba/branch/master/graph/badge.svg?token=ZUA70S1LUU)](https://codecov.io/gh/huidongchen/simba)
 
 # SIMBA
 
