@@ -4,9 +4,11 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - simba>=1.1
-  - pandoc>=2.14
+  - mamba
   - pip
+  - mamba:
+    - simba>=1.1
+    - pandoc>=2.14
   - pip:
     - sphinx>=3.0
     - sphinx-rtd-theme>=0.5
