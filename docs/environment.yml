@@ -11,3 +11,4 @@ dependencies:
     - sphinx>=3.0
     - sphinx-rtd-theme>=0.5
     - nbsphinx>=0.8
+    - numpy<=1.24.0 #avoid errors caused by 1.24
