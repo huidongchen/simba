@@ -19,14 +19,14 @@ To install `simba <https://anaconda.org/bioconda/simba>`_ with conda, run::
 
 **Recommended**: install *simba* in a new virtual enviroment::
 
-    conda create -n env_simba python simba
+    conda create -n env_simba simba
     conda activate env_simba
 
 
 Dev version
 ~~~~~~~~~~~
 
-To install the latest version on `GitHub <https://github.com/pinellolab/simba>`_, 
+To install the latest version on `GitHub <https://github.com/huidongchen/simba>`_, 
 
 first install `simba_pbg <https://anaconda.org/bioconda/simba_pbg>`_ ::
 
@@ -35,9 +35,9 @@ first install `simba_pbg <https://anaconda.org/bioconda/simba_pbg>`_ ::
 
 then run::
 
-    git clone https://github.com/pinellolab/simba.git
+    git clone https://github.com/huidongchen/simba.git
     pip install simba --user
 
 or::
 
-    pip install git+https://github.com/pinellolab/simba
+    pip install git+https://github.com/huidongchen/simba
