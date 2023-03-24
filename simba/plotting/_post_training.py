@@ -429,8 +429,8 @@ def entity_barcode(adata_cmp,
 
 
 def query(adata,
-          comp1=1,
-          comp2=2,
+          comp1=0,
+          comp2=1,
           obsm='X_umap',
           layer=None,
           color=None,
@@ -464,9 +464,9 @@ def query(adata,
     ----------
     adata : `Anndata`
         Annotated data matrix.
-    comp1 : `int`, optional (default: 1)
+    comp1 : `int`, optional (default: 0)
         Component used for x axis.
-    comp2 : `int`, optional (default: 2)
+    comp2 : `int`, optional (default: 1)
         Component used for y axis.
     obsm : `str`, optional (default: 'X_umap')
         The field to use for plotting
@@ -583,10 +583,10 @@ def query(adata,
         X = adata.X.copy()
         X_nn = adata[nn, :].X.copy()
     df_plot = pd.DataFrame(index=adata.obs.index,
-                           data=X[:, [comp1-1, comp2-1]],
+                           data=X[:, [comp1, comp2]],
                            columns=[f'Dim {comp1}', f'Dim {comp2}'])
     df_plot_nn = pd.DataFrame(index=adata[nn, :].obs.index,
-                              data=X_nn[:, [comp1-1, comp2-1]],
+                              data=X_nn[:, [comp1, comp2]],
                               columns=[f'Dim {comp1}', f'Dim {comp2}'])
     if show_texts:
         if texts is None:
@@ -666,14 +666,14 @@ def query(adata,
                    alpha=alpha,
                    lw=0)
         if pin is not None:
-            ax.scatter(pin[:, 0],
-                       pin[:, 1],
+            ax.scatter(pin[:, comp1],
+                       pin[:, comp2],
                        s=20*size,
                        marker='+',
                        color='#B33831')
             if use_radius:
-                circle = plt.Circle((pin[:, 0],
-                                     pin[:, 1]),
+                circle = plt.Circle((pin[:, comp1],
+                                     pin[:, comp2]),
                                     radius=r,
                                     color='#B33831',
                                     fill=False)

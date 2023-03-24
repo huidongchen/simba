@@ -49,7 +49,7 @@ def discretize(adata,
         density=False)
     hist_centroids = (hist_edges[0:-1] + hist_edges[1:])/2
 
-    kmeans = KMeans(n_clusters=n_bins, random_state=2021).fit(
+    kmeans = KMeans(n_clusters=n_bins, random_state=2021, n_init='auto').fit(
         hist_centroids.reshape(-1, 1),
         sample_weight=hist_count)
     cluster_centers = np.sort(kmeans.cluster_centers_.flatten())
