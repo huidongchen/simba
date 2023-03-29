@@ -551,6 +551,9 @@ def query(adata,
 
     query_output = adata.uns['query']['output']
     nn = query_output.index.tolist()  # nearest neighbors
+    if len(nn) == 0:
+        print('No neighbor entities were found.')
+        return
     query_params = adata.uns['query']['params']
     query_obsm = query_params['obsm']
     query_layer = query_params['layer']
@@ -659,12 +662,13 @@ def query(adata,
                                  copy=True,
                                  **kwargs)
     for ax in list_ax:
-        ax.scatter(df_plot_nn[f'Dim {comp1}'],
-                   df_plot_nn[f'Dim {comp2}'],
-                   s=size,
-                   color='#AE6C68',
-                   alpha=alpha,
-                   lw=0)
+        ax.scatter(
+            df_plot_nn[f'Dim {comp1}'],
+            df_plot_nn[f'Dim {comp2}'],
+            s=size,
+            color='#AE6C68',
+            alpha=alpha,
+            lw=0)
         if pin is not None:
             ax.scatter(pin[:, comp1],
                        pin[:, comp2],

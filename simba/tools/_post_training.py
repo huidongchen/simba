@@ -41,6 +41,7 @@ def softmax(adata_ref,
     percentile: `int` (default: 0)
         Percentile (0-100) of reference entities to exclude when transforming
         entities in query data.
+        Only valid when `n_top` is not specified.
         It is used to filter out low-probability reference entities.
         All reference entities used by default.
 
@@ -275,7 +276,7 @@ def embed(adata_ref,
 
 def compare_entities(adata_ref,
                      adata_query,
-                     n_top_cells=50,
+                     n_top=50,
                      T=1):
     """Compare the embeddings of two entities by calculating
 
@@ -302,8 +303,9 @@ def compare_entities(adata_ref,
         Reference entity anndata.
     adata_query: `list`
         Query entity anndata.
-    n_top_cells: `int`, optional (default: 50)
-        The number of cells to consider when calculating the metric 'max'
+    n_top: `int`, optional (default: 50)
+        The number of reference entities to consider
+        when calculating the metric 'max'
     T: `float`
         Temperature parameter for softmax.
         It controls the output probability distribution.
@@ -328,7 +330,7 @@ def compare_entities(adata_ref,
     adata_cmp.layers['softmax'] = np.exp(X_cmp/T) \
         / np.exp(X_cmp/T).sum(axis=0).reshape(1, -1)
     adata_cmp.var['max'] = \
-        np.clip(np.sort(adata_cmp.layers['norm'], axis=0)[-n_top_cells:, ],
+        np.clip(np.sort(adata_cmp.layers['norm'], axis=0)[-n_top:, ],
                 a_min=0,
                 a_max=None).mean(axis=0)
     adata_cmp.var['std'] = np.std(X_cmp, axis=0, ddof=1)

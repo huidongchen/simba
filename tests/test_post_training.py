@@ -17,6 +17,10 @@ def test_embeddding_rna(dict_adata, tmp_path):
     adata_G = dict_adata['G']
     adata_all_CG = si.tl.embed(
         adata_ref=adata_C,
+        list_adata_query=[adata_G],
+        n_top=20)
+    adata_all_CG = si.tl.embed(
+        adata_ref=adata_C,
         list_adata_query=[adata_G])
     # add annotations of cells and genes
     adata_all_CG.obs['entity_anno'] = ""
@@ -26,6 +30,8 @@ def test_embeddding_rna(dict_adata, tmp_path):
     si.tl.umap(adata_all_CG,
                n_neighbors=15,
                n_components=2)
+    si.pl.umap(adata_all_CG, drawing_order='random')
+    si.pl.umap(adata_all_CG, color=['entity_anno'], drawing_order='random')
     adata_cmp = si.tl.compare_entities(
         adata_ref=adata_C,
         adata_query=adata_G)
@@ -55,14 +61,22 @@ def test_embeddding_rna(dict_adata, tmp_path):
                                k=50,
                                anno_filter='entity_anno',
                                filters=['gene'])
-    query_result = si.tl.query(adata_all_CG,
-                               entity=list(adata_C.obs_names[:2]),
-                               obsm='X_umap',
-                               use_radius=True,
-                               anno_filter='entity_anno',
-                               filters=['gene'])
     print(query_result.head())
     si.pl.query(adata_all_CG,
+                obsm=None,
+                show_texts=False,
+                color=['entity_anno'],
+                alpha=0.9,
+                alpha_bg=0.1,
+                save_fig=True)
+    query_result = si.tl.query(adata_all_CG,
+                               entity=adata_C.obs_names[0],
+                               obsm='X_umap',
+                               use_radius=True,
+                               anno_filter='entity_anno')
+    print(query_result.head())
+    si.pl.query(adata_all_CG,
+                obsm='X_umap',
                 show_texts=False,
                 color=['entity_anno'],
                 alpha=0.9,
