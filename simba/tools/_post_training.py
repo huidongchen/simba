@@ -33,8 +33,17 @@ def softmax(adata_ref,
         each query becomes the average of reference;
         When T goes to zero, softargmax converges to arg max,
         each query is approximately the best of reference.
-    cutoff: `float`
-        The cutoff used to filter out low-probability reference entities
+    n_top: `float` (default: None)
+        The number of top reference entities to include when transforming
+        entities in query data.
+        It is used to filter out low-probability reference entities.
+        All reference entities used by default.
+    percentile: `int` (default: 0)
+        Percentile (0-100) of reference entities to exclude when transforming
+        entities in query data.
+        It is used to filter out low-probability reference entities.
+        All reference entities used by default.
+
     Returns
     -------
     updates `adata_query` with the following field.
@@ -98,12 +107,20 @@ class SimbaEmbed:
             A list of temperature parameters.
             It should correspond to each of query data.
             Once it's specified, it will override `T`.
-        cutoff: `float`, (default: None)
-            The cutoff used to filter out low-probability reference entities
-        list_cutoff: `list`, (default: None)
-            A list of cutoff values.
-            It should correspond to each of query data.
-            Once it's specified, it will override `cutoff`.
+        n_top: `float` (default: None)
+            The number of top reference entities to include
+            when transforming entities in query data.
+            It is used to filter out low-probability reference entities.
+            All reference entities used by default.
+        percentile: `int` (default: 0)
+            Percentile (0-100) of reference entities to exclude
+            when transforming entities in query data.
+            It is used to filter out low-probability reference entities.
+            All reference entities used by default.
+        list_percentile: `list`, (default: None)
+            A list of percentile parameters.
+            It corresponds to each of query data.
+            Once it's specified, it will override `percentile`.
         """
         assert isinstance(list_adata_query, list), \
             "`list_adata_query` must be list"
@@ -221,6 +238,20 @@ def embed(adata_ref,
         A list of temperature parameters.
         It corresponds to each of query data.
         Once it's specified, it will override `T`.
+    n_top: `float` (default: None)
+        The number of top reference entities to include when transforming
+        entities in query data.
+        It is used to filter out low-probability reference entities.
+        All reference entities used by default.
+    percentile: `int` (default: 0)
+        Percentile (0-100) of reference entities to exclude when transforming
+        entities in query data.
+        It is used to filter out low-probability reference entities.
+        All reference entities used by default.
+    list_percentile: `list`, (default: None)
+        A list of percentile parameters.
+        It corresponds to each of query data.
+        Once it's specified, it will override `percentile`.
 
     Returns
     -------
