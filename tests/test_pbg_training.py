@@ -14,15 +14,29 @@ def adata_CP():
         "tests/data/preprocessed/atac_preprocessed.h5ad")
 
 
+def test_gen_graph(adata_CG, tmp_path):
+    si.settings.set_workdir(tmp_path / "simba_rna")
+    si.tl.gen_graph(list_CG=[adata_CG],
+                    copy=False,
+                    dirname='graph0')
+    si.tl.gen_graph(list_CG=[adata_CG],
+                    copy=False,
+                    add_edge_weights=True,
+                    dirname='graph1')
+    si.tl.gen_graph(list_adata=[adata_CG],
+                    copy=False,
+                    dirname='graph2')
+    si.tl.gen_graph(list_adata=[adata_CG],
+                    copy=False,
+                    add_edge_weights=True,
+                    dirname='graph3')
+
+
 def test_pbg_training_rna(adata_CG, tmp_path):
     si.settings.set_workdir(tmp_path / "simba_rna")
     si.tl.gen_graph(list_CG=[adata_CG],
                     copy=False,
                     dirname='graph0')
-    si.tl.gen_graph(list_adata=[adata_CG],
-                    add_edge_weights=True,
-                    copy=False,
-                    dirname='graph1')
     dict_config = si.settings.pbg_params.copy()
     si.settings.set_pbg_params(dict_config)
     si.tl.pbg_train(auto_wd=True,

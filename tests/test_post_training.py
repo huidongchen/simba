@@ -50,9 +50,15 @@ def test_embeddding_rna(dict_adata, tmp_path):
                          save_fig=True)
     query_result = si.tl.query(adata_all_CG,
                                entity=list(adata_C.obs_names[:2]),
-                               obsm='X_umap',
+                               obsm=None,
                                use_radius=False,
                                k=50,
+                               anno_filter='entity_anno',
+                               filters=['gene'])
+    query_result = si.tl.query(adata_all_CG,
+                               entity=list(adata_C.obs_names[:2]),
+                               obsm='X_umap',
+                               use_radius=True,
                                anno_filter='entity_anno',
                                filters=['gene'])
     print(query_result.head())

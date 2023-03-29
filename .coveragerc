@@ -1,2 +1,2 @@
 [run]
-omit = simba/datasets/*
+omit = simba/datasets/*, simba/_utils.py
