@@ -219,7 +219,7 @@ def embed(adata_ref,
         each query is approximately the best of reference.
     list_T: `list`, (default: None)
         A list of temperature parameters.
-        It should correspond to each of query data.
+        It corresponds to each of query data.
         Once it's specified, it will override `T`.
 
     Returns

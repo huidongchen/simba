@@ -877,6 +877,7 @@ def pbg_train(dirname=None,
     settings.pbg_params['checkpoint_path'] = pbg_params['checkpoint_path']
 
     if auto_wd:
+        print('Auto-estimating weight decay ...')
         # empirical numbers from simulation experiments
         if settings.graph_stats[
                 os.path.basename(filepath)]['n_edges'] < 5e7:
@@ -891,12 +892,12 @@ def pbg_train(dirname=None,
                 0.0004 * 59103481 / settings.graph_stats[
                     os.path.basename(filepath)]['n_edges'],
                 decimals=6)
-        print(f'Auto-estimated weight decay is {wd}')
         pbg_params['wd'] = wd
         if save_wd:
             settings.pbg_params['wd'] = pbg_params['wd']
             print(f"`.settings.pbg_params['wd']` has been updated to {wd}")
 
+    print(f'Weight decay being used for training is {pbg_params["wd"]}')
     # to avoid oversubscription issues in workloads
     # that involve nested parallelism
     os.environ["OMP_NUM_THREADS"] = "1"
