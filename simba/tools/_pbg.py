@@ -25,28 +25,29 @@ from torchbiggraph.util import (
 from .._settings import settings
 
 
-def gen_graph(list_CP=None,
-              list_PM=None,
-              list_PK=None,
-              list_CG=None,
-              list_CC=None,
-              list_adata=None,
-              prefix_C='C',
-              prefix_P='P',
-              prefix_M='M',
-              prefix_K='K',
-              prefix_G='G',
-              prefix='E',
-              layer='simba',
-              copy=False,
-              dirname='graph0',
-              add_edge_weights=None,
-              use_highly_variable=True,
-              use_top_pcs=True,
-              use_top_pcs_CP=None,
-              use_top_pcs_PM=None,
-              use_top_pcs_PK=None
-              ):
+def gen_graph(
+        list_CP=None,
+        list_PM=None,
+        list_PK=None,
+        list_CG=None,
+        list_CC=None,
+        list_adata=None,
+        prefix_C='C',
+        prefix_P='P',
+        prefix_M='M',
+        prefix_K='K',
+        prefix_G='G',
+        prefix='E',
+        layer='simba',
+        copy=False,
+        dirname='graph0',
+        add_edge_weights=None,
+        use_highly_variable=True,
+        use_top_pcs=True,
+        use_top_pcs_CP=None,
+        use_top_pcs_PM=None,
+        use_top_pcs_PK=None
+):
     """Generate graph for PBG training.
 
     Observations and variables of each Anndata object will be encoded
@@ -55,9 +56,11 @@ def gen_graph(list_CP=None,
     between nodes. The values of `.layers['simba']` or `.X` will be used
     as the edge weights if `add_edge_weights` True.
 
-    Nodes between different anndata objects will be automatically matched
-    based on `.obs_names` and `.var_names`. Each anndata object indicates one
-    or more relation types.
+    When `list_adata` is specified, nodes between different anndata objects
+    in it will be automatically matched based on `.obs_names` and `.var_names`.
+    It is a generalized parameter that encompasses data-specific parameters
+    such as list_CG, list_CP, list_PK, etc.
+    Each anndata object indicates one or more relation types.
 
     It also generates an accompanying file 'entity_alias.tsv' to map
     the indices to the aliases used in the graph.
@@ -71,15 +74,20 @@ def gen_graph(list_CP=None,
     list_CP: `list`, optional (default: None)
         A list of anndata objects that store ATAC-seq data (Cells by Peaks)
         The default weight of cell-peak relation type is 1.0.
+        Ignored when `list_adata` is specified.
     list_PM: `list`, optional (default: None)
-        A list of anndata objects that store relation between Peaks and Motifs
+        A list of anndata objects that store relation between Peaks and Motifs.
+        Ignored when `list_adata` is specified.
     list_PK: `list`, optional (default: None)
         A list of anndata objects that store relation between Peaks and Kmers
+        Ignored when `list_adata` is specified.
     list_CG: `list`, optional (default: None)
-        A list of anndata objects that store RNA-seq data (Cells by Genes)
+        A list of anndata objects that store RNA-seq data (Cells by Genes).
+        Ignored when `list_adata` is specified.
     list_CC: `list`, optional (default: None)
         A list of anndata objects that store relation between Cells
         from two conditions
+        Ignored when `list_adata` is specified.
     list_adata: `list`, optional (default: None)
         A list of anndata objects. `.obs_names` and `.var_names`
         between anndata objects will be automatically matched.
@@ -87,8 +95,10 @@ def gen_graph(list_CP=None,
         `list_CP`, `list_PM`,`list_PK`, `list_CG`, `list_CC` will be ignored.
     prefix_C: `str`, optional (default: 'C')
         Prefix to indicate the entity type of cells
+        Ignored when `list_adata` is specified.
     prefix_G: `str`, optional (default: 'G')
         Prefix to indicate the entity type of genes
+        Ignored when `list_adata` is specified.
     prefix: `str`, optional (default: 'E')
         Prefix to indicate general entities in `list_adata`
     layer: `str`, optional (default: 'simba')
@@ -102,18 +112,27 @@ def gen_graph(list_CP=None,
         If `list_adata` is specified, `add_edge_weights` is set True
         by default. Otherwise, it is set False.
     use_highly_variable: `bool`, optional (default: True)
-        Use highly variable genes. Only valid for list_CG.
+        Use highly variable genes. Only valid for `list_CG`.
+        Ignored when `list_adata` is specified.
     use_top_pcs: `bool`, optional (default: True)
         Use top-PCs-associated features for CP, PM, PK
+        Only valid for `list_PM`,`list_PK`, `list_CP`.
+        Ignored when `list_adata` is specified.
     use_top_pcs_CP: `bool`, optional (default: None)
         Use top-PCs-associated features for CP
+        Only valid for `list_CP`.
         Once specified, it will overwrite `use_top_pcs`
+        Ignored when `list_adata` is specified.
     use_top_pcs_PM: `bool`, optional (default: None)
         Use top-PCs-associated features for PM
+        Only valid for `list_PM`.
         Once specified, it will overwrite `use_top_pcs`
+        Ignored when `list_adata` is specified.
     use_top_pcs_PK: `bool`, optional (default: None)
         Use top-PCs-associated features for PK
+         Only valid for `list_PK`.
         Once specified, it will overwrite `use_top_pcs
+        Ignored when `list_adata` is specified.
     copy: `bool`, optional (default: False)
         If True, it returns the graph file as a data frame
 
@@ -858,6 +877,7 @@ def pbg_train(dirname=None,
     settings.pbg_params['checkpoint_path'] = pbg_params['checkpoint_path']
 
     if auto_wd:
+        print('Auto-estimating weight decay ...')
         # empirical numbers from simulation experiments
         if settings.graph_stats[
                 os.path.basename(filepath)]['n_edges'] < 5e7:
@@ -872,12 +892,12 @@ def pbg_train(dirname=None,
                 0.0004 * 59103481 / settings.graph_stats[
                     os.path.basename(filepath)]['n_edges'],
                 decimals=6)
-        print(f'Auto-estimated weight decay is {wd}')
         pbg_params['wd'] = wd
         if save_wd:
             settings.pbg_params['wd'] = pbg_params['wd']
             print(f"`.settings.pbg_params['wd']` has been updated to {wd}")
 
+    print(f'Weight decay being used for training is {pbg_params["wd"]}')
     # to avoid oversubscription issues in workloads
     # that involve nested parallelism
     os.environ["OMP_NUM_THREADS"] = "1"
