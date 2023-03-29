@@ -24,23 +24,17 @@ def cal_qc(adata, expr_cutoff=1):
     -------
     updates `adata` with the following fields.
     n_counts: `pandas.Series` (`adata.var['n_counts']`,dtype `int`)
-       The number of read count each gene has.
-    n_cells: `pandas.Series` (`adata.var['n_cells']`,dtype `int`)
-       The number of cells in which each gene is expressed.
-    pct_cells: `pandas.Series` (`adata.var['pct_cells']`,dtype `float`)
-       The percentage of cells in which each gene is expressed.
+       The total read count for a feature.
+    n_samples: `pandas.Series` (`adata.var['n_samples']`,dtype `int`)
+       The number of samples that express at least one feature.
+    pct_samples: `pandas.Series` (`adata.var['pct_samples']`,dtype `float`)
+       The percentage of samples that express at least one feature.
     n_counts: `pandas.Series` (`adata.obs['n_counts']`,dtype `int`)
-       The number of read count each cell has.
-    n_genes: `pandas.Series` (`adata.obs['n_genes']`,dtype `int`)
-       The number of genes expressed in each cell.
-    pct_genes: `pandas.Series` (`adata.obs['pct_genes']`,dtype `float`)
-       The percentage of genes expressed in each cell.
-    n_peaks: `pandas.Series` (`adata.obs['n_peaks']`,dtype `int`)
-       The number of peaks expressed in each cell.
-    pct_peaks: `pandas.Series` (`adata.obs['pct_peaks']`,dtype `int`)
-       The percentage of peaks expressed in each cell.
-    pct_mt: `pandas.Series` (`adata.obs['pct_mt']`,dtype `float`)
-       the percentage of counts in mitochondrial genes
+       The total read count for a sample.
+    n_features: `pandas.Series` (`adata.obs['n_features']`,dtype `int`)
+       The number of features expressed in a sample.
+    pct_features: `pandas.Series` (`adata.obs['pct_features']`,dtype `float`)
+       The percentage of features expressed in a sample.
     """
 
     if not issparse(adata.X):
@@ -75,23 +69,19 @@ def cal_qc_rna(adata, expr_cutoff=1):
     -------
     updates `adata` with the following fields.
     n_counts: `pandas.Series` (`adata.var['n_counts']`,dtype `int`)
-       The number of read count each gene has.
+       The total read count for a gene.
     n_cells: `pandas.Series` (`adata.var['n_cells']`,dtype `int`)
-       The number of cells in which each gene is expressed.
+       The number of cells that express at least one gene.
     pct_cells: `pandas.Series` (`adata.var['pct_cells']`,dtype `float`)
-       The percentage of cells in which each gene is expressed.
+       The percentage of cells that express at least one gene.
     n_counts: `pandas.Series` (`adata.obs['n_counts']`,dtype `int`)
-       The number of read count each cell has.
+       The total read count for a cell.
     n_genes: `pandas.Series` (`adata.obs['n_genes']`,dtype `int`)
-       The number of genes expressed in each cell.
+       The number of genes expressed in a cell.
     pct_genes: `pandas.Series` (`adata.obs['pct_genes']`,dtype `float`)
-       The percentage of genes expressed in each cell.
-    n_peaks: `pandas.Series` (`adata.obs['n_peaks']`,dtype `int`)
-       The number of peaks expressed in each cell.
-    pct_peaks: `pandas.Series` (`adata.obs['pct_peaks']`,dtype `int`)
-       The percentage of peaks expressed in each cell.
+       The percentage of genes expressed in a cell.
     pct_mt: `pandas.Series` (`adata.obs['pct_mt']`,dtype `float`)
-       the percentage of counts in mitochondrial genes
+       the percentage of mitochondrial gene reads for a cell.
     """
 
     if not issparse(adata.X):
@@ -133,23 +123,17 @@ def cal_qc_atac(adata, expr_cutoff=1):
     -------
     updates `adata` with the following fields.
     n_counts: `pandas.Series` (`adata.var['n_counts']`,dtype `int`)
-       The number of read count each gene has.
+       The total read count for a peak.
     n_cells: `pandas.Series` (`adata.var['n_cells']`,dtype `int`)
-       The number of cells in which each gene is expressed.
+       The total number of cells which have at least one peak.
     pct_cells: `pandas.Series` (`adata.var['pct_cells']`,dtype `float`)
-       The percentage of cells in which each gene is expressed.
+       The percentage of cells which have at least one peak.
     n_counts: `pandas.Series` (`adata.obs['n_counts']`,dtype `int`)
-       The number of read count each cell has.
-    n_genes: `pandas.Series` (`adata.obs['n_genes']`,dtype `int`)
-       The number of genes expressed in each cell.
-    pct_genes: `pandas.Series` (`adata.obs['pct_genes']`,dtype `float`)
-       The percentage of genes expressed in each cell.
+       The total read count for a cell.
     n_peaks: `pandas.Series` (`adata.obs['n_peaks']`,dtype `int`)
-       The number of peaks expressed in each cell.
+       The number of peaks that are present in each cell.
     pct_peaks: `pandas.Series` (`adata.obs['pct_peaks']`,dtype `int`)
-       The percentage of peaks expressed in each cell.
-    pct_mt: `pandas.Series` (`adata.obs['pct_mt']`,dtype `float`)
-       the percentage of counts in mitochondrial genes
+       The percentage of peaks that are present in each cell.
     """
 
     if not issparse(adata.X):

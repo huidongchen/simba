@@ -18,7 +18,14 @@ def test_rna(adata_CG, tmp_path):
                                   style='white',
                                   fig_size=[5, 5],
                                   rc={'image.cmap': 'viridis'})
+    si.pp.filter_features(adata_CG, min_n_samples=1)
     si.pp.filter_genes(adata_CG, min_n_cells=3)
+    si.pp.cal_qc(adata_CG)
+    si.pl.violin(adata_CG,
+                 list_obs=['n_counts', 'n_features'],
+                 save_fig=True,
+                 fig_name='plot_violin.png')
+    si.pp.filter_samples(adata_CG, min_n_features=1)
     si.pp.cal_qc_rna(adata_CG)
     si.pl.violin(adata_CG,
                  list_obs=['n_counts', 'n_genes', 'pct_mt'],
@@ -41,6 +48,7 @@ def test_rna(adata_CG, tmp_path):
 def test_atac(adata_CP, tmp_path):
     si.settings.set_workdir(tmp_path / "simba_atac")
     si.pp.filter_peaks(adata_CP, min_n_cells=5)
+    si.pp.binarize(adata_CP)
     si.pp.cal_qc_atac(adata_CP)
     si.pl.hist(adata_CP,
                list_obs=['n_counts', 'n_peaks', 'pct_peaks'],
@@ -61,6 +69,7 @@ def test_atac(adata_CP, tmp_path):
                        fig_ncol=5,
                        save_fig=True,
                        fig_name='plot_pcs_features.png')
+    si.write_bed(adata_CP, use_top_pcs=True)
 
 
 def test_genescores(adata_CP):
