@@ -91,7 +91,7 @@ exclude_patterns = ['_build']
 # Add prolog for notebooks
 
 # nbsphinx_prolog = r"""
-# {% set docname = 'github/huidongchen/simba_tutorials/blob/main/v1.0/' + env.doc2path(env.docname, base=None) %}
+# {% set docname = 'github/huidongchen/simba_tutorials/blob/main/v1.0/' + env.doc2path(env.docname, base=None) %} # noqa
 # """
 
 # -- Options for HTML output -------------------------------------------------
