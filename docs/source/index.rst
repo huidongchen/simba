@@ -36,7 +36,7 @@ SIMBA is a method to embed cells along with their defining features such as gene
    :maxdepth: 1
    :caption: Tutorials
 
-   rna_10xpmbc_all_genes
+   rna_10xpmbc_all_genes_v1.2
    atac_buenrostro2018_peaks_and_sequences
    multiome_shareseq
    multiome_shareseq_GRN

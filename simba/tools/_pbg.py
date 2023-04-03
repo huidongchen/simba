@@ -157,7 +157,7 @@ def gen_graph(
         The relation types.
 
     updates `.settings.graph_stats` with the following parameters.
-    `dirname`: `dict`
+    dirname: `dict`
         Statistics of input graph
     """
 
