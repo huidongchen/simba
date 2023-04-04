@@ -33,7 +33,6 @@ from urllib.request import urlretrieve  # noqa: E402
 
 notebooks_url = "https://github.com/huidongchen/simba_tutorials/raw/main/"
 notebooks_v1_0 = [
-    "rna_10xpmbc_all_genes.ipynb",
     "atac_buenrostro2018_peaks_and_sequences.ipynb",
     "multiome_shareseq.ipynb",
     "multiome_shareseq_GRN.ipynb",
@@ -43,6 +42,9 @@ notebooks_v1_0 = [
 ]
 notebooks_v1_1 = [
     "rna_10x_mouse_brain_1p3M.ipynb",
+]
+notebooks_v1_2 = [
+    "rna_10xpmbc_all_genes_v1.2.ipynb",
 ]
 for nb in notebooks_v1_0:
     try:
@@ -56,6 +58,11 @@ for nb in notebooks_v1_1:
     except Exception:
         pass
 
+for nb in notebooks_v1_2:
+    try:
+        urlretrieve(notebooks_url + "v1.2/" + nb, nb)
+    except Exception:
+        pass
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -91,7 +98,7 @@ exclude_patterns = ['_build']
 # Add prolog for notebooks
 
 # nbsphinx_prolog = r"""
-# {% set docname = 'github/huidongchen/simba_tutorials/blob/main/v1.0/' + env.doc2path(env.docname, base=None) %}
+# {% set docname = 'github/huidongchen/simba_tutorials/blob/main/v1.0/' + env.doc2path(env.docname, base=None) %} # noqa
 # """
 
 # -- Options for HTML output -------------------------------------------------
