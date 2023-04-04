@@ -50,10 +50,12 @@ SIMBA result structure will look like this:
 
 By default, all figures will be saved under ``result_simba/figures``
 
-PBG training will be saved under the folder ``result_simba/pbg``. Within this folder, each constructed graph is saved into a separate folder (by default ``graph0``) under ``pbg``. For each graph:
+The PBG training results will be stored in the directory ``result_simba/pbg``. Inside this folder, each constructed graph will be saved in a distinct folder (by default ``result_simba/pbg/graph0``), and each model trained on that graph will be saved into a separate folder (by default ``result_simba/pbg/graph0/model``).
+
+Inside each graph folder (e.g., ``result_simba/pbg/graph0``):
 
 - ``pbg_graph.txt`` stores its edges on which PBG training is performed;
-- ``graph_stats.json`` stores the statistics related to this graph;
+- ``graph_stats.json`` stores the statistics associated with this graph;
 - ``entity_alias.txt`` keeps the mapping between the original entity IDs and their aliases. 
 - ``input`` stores the extracted nodes (entities) and edges from ``pbg_graph.txt``, which are prepared for PBG training.
 - ``model`` stores the training result of one parameter configuration. (by default ``model``)

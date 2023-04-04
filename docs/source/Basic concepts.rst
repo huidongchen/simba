@@ -5,7 +5,7 @@ Basic concepts
 
 Graph construction
 ~~~~~~~~~~~~~~~~~~
-SIMBA encodes entities of different types, including genes, open chromatin regions (peaks or bins), and DNA sequences (transcription factor motifs or k-mers), into a single large graph based on the relation between them. In this graph, nodes represent different entities and edges indicate the relation between entities. 
+SIMBA encodes entities of different types, including genes, open chromatin regions (peaks or bins), and DNA sequences (transcription factor motifs or k-mers), into a connected large graph based on the relation between them. In this graph, nodes represent different entities and edges indicate the relation between entities. 
 
 * In scRNA-seq analysis, each node represents either a cell or a gene. If a gene is expressed in a cell, then an edge is added between this gene and cell. The gene expression level is encoded into the weight of this edge.
 
@@ -46,7 +46,7 @@ During the PBG training procedure, a small percent of edges is held out (by defa
 
 Five metrics are computed on the reserved set of edges, including mean reciprocal rank (MRR, the average of the reciprocal of the ranks of all positives), R1 (the fraction of positives that rank better than all their negatives, i.e., have a rank of 1), R10 (the fraction of positives that rank in the top 10 among their negatives), R50 (the fraction of positives that rank in the top 50 among their negatives), and AUC (Area Under the Curve). 
 
-By default, we show MRR along with training loss and validation loss while other metric are also available in SIMBA package (Supplementary Fig. 1a).  The learning curves for validation loss and these metrics can be used to determine when training has completed. The relative values of training and validation loss along with these evaluation metrics can be used to identify issues with training (underfitting vs overfitting) and tune the hyperparameters weight decay, embedding dimension, and number of training epochs appropriately. However, for most datasets we find that the default parameters do not need tuning. 
+By default, we show MRR along with training loss and validation loss while other metric are also available in SIMBA package.  The learning curves for validation loss and these metrics can be used to determine when training has completed. The relative values of training and validation loss along with these evaluation metrics can be used to identify issues with training (underfitting vs overfitting) and tune the hyperparameters weight decay, embedding dimension, and number of training epochs appropriately. However, for most datasets we find that the default parameters do not need tuning. 
 
 Softmax transformation
 ~~~~~~~~~~~~~~~~~~~~~~
