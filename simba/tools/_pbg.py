@@ -9,7 +9,8 @@ from pathlib import Path
 import attr
 from torchbiggraph.config import (
     add_to_sys_path,
-    ConfigFileLoader
+    ConfigFileLoader,
+    ConfigSchema
 )
 from torchbiggraph.converters.importers import (
     convert_input_data,
@@ -24,6 +25,14 @@ from torchbiggraph.util import (
 
 from .._settings import settings
 
+
+class SimbaConfigFileLoader(torchbiggraph.config.ConfigFileLoader):
+   def load_config_simba(
+    self, pbg_params: dict,
+) -> torchbiggraph.config.ConfigSchema:
+    config_dict = pbg_params
+    config = super().parse_config(config_dict)
+    return config
 
 def gen_graph(
         list_CP=None,
@@ -902,7 +911,7 @@ def pbg_train(dirname=None,
     # that involve nested parallelism
     os.environ["OMP_NUM_THREADS"] = "1"
 
-    loader = ConfigFileLoader()
+    loader = SimbaConfigFileLoader()
     config = loader.load_config_simba(pbg_params)
     set_logging_verbosity(config.verbose)
 
