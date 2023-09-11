@@ -26,13 +26,20 @@ from torchbiggraph.util import (
 from .._settings import settings
 
 
-class SimbaConfigFileLoader(torchbiggraph.config.ConfigFileLoader):
+
+class SimbaConfigFileLoader(ConfigFileLoader):
+    """
+    Extend the torchbiggraph.config.ConfigFileLoader class
+    for simba. Having this class in the simba repo makes it
+    so we don't need to edit the biggraph repo.
+    """
    def load_config_simba(
     self, pbg_params: dict,
-) -> torchbiggraph.config.ConfigSchema:
+) -> ConfigSchema:
     config_dict = pbg_params
     config = super().parse_config(config_dict)
     return config
+
 
 def gen_graph(
         list_CP=None,
