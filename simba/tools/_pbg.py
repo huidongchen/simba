@@ -10,7 +10,8 @@ import attr
 from torchbiggraph.config import (
     add_to_sys_path,
     ConfigFileLoader,
-    ConfigSchema
+    ConfigSchema,
+    parse_config
 )
 from torchbiggraph.converters.importers import (
     convert_input_data,
@@ -26,18 +27,16 @@ from torchbiggraph.util import (
 from .._settings import settings
 
 
-
 class SimbaConfigFileLoader(ConfigFileLoader):
     """
     Extend the torchbiggraph.config.ConfigFileLoader class
     for simba. Having this class in the simba repo makes it
     so we don't need to edit the biggraph repo.
     """
-    def load_config_simba(self, pbg_params: dict,) -> ConfigSchema:
+    def load_config_simba(self, pbg_params: dict) -> ConfigSchema:
         config_dict = pbg_params
-        config = super().parse_config(config_dict)
+        config = parse_config(config_dict)
         return config
-
 
 def gen_graph(
         list_CP=None,
