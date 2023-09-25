@@ -29,6 +29,7 @@ def gen_graph(
         list_CP=None,
         list_PM=None,
         list_PK=None,
+        list_PV=None,
         list_CG=None,
         list_CC=None,
         list_adata=None,
@@ -36,6 +37,7 @@ def gen_graph(
         prefix_P='P',
         prefix_M='M',
         prefix_K='K',
+        prefix_V='V',
         prefix_G='G',
         prefix='E',
         layer='simba',
@@ -46,7 +48,8 @@ def gen_graph(
         use_top_pcs=True,
         use_top_pcs_CP=None,
         use_top_pcs_PM=None,
-        use_top_pcs_PK=None
+        use_top_pcs_PK=None,
+        use_top_pcs_PV=None,
 ):
     """Generate graph for PBG training.
 
@@ -80,6 +83,9 @@ def gen_graph(
         Ignored when `list_adata` is specified.
     list_PK: `list`, optional (default: None)
         A list of anndata objects that store relation between Peaks and Kmers
+        Ignored when `list_adata` is specified.
+    list_PV: `list`, optional (default: None)
+        A list of anndata objects that store relation between Peaks and Variants
         Ignored when `list_adata` is specified.
     list_CG: `list`, optional (default: None)
         A list of anndata objects that store RNA-seq data (Cells by Genes).
@@ -133,6 +139,11 @@ def gen_graph(
          Only valid for `list_PK`.
         Once specified, it will overwrite `use_top_pcs
         Ignored when `list_adata` is specified.
+    use_top_pcs_PK: `bool`, optional (default: None)
+        Use top-PCs-associated features for PV
+         Only valid for `list_PV`.
+        Once specified, it will overwrite `use_top_pcs
+        Ignored when `list_adata` is specified.
     copy: `bool`, optional (default: False)
         If True, it returns the graph file as a data frame
 
@@ -160,14 +171,14 @@ def gen_graph(
     dirname: `dict`
         Statistics of input graph
     """
-
     if sum(list(map(lambda x: x is None,
                     [list_CP,
                      list_PM,
                      list_PK,
+                     list_PV,
                      list_CG,
                      list_CC,
-                     list_adata]))) == 6:
+                     list_adata]))) == 7:
         return 'No graph is generated'
 
     filepath = os.path.join(settings.workdir, 'pbg', dirname)
@@ -321,6 +332,7 @@ def gen_graph(
         ids_peaks = pd.Index([])
         ids_kmers = pd.Index([])
         ids_motifs = pd.Index([])
+        ids_variants = pd.Index([])
 
         if list_CP is not None:
             for adata_ori in list_CP:
@@ -374,6 +386,18 @@ def gen_graph(
                     adata = adata_ori.copy()
                 ids_peaks = ids_peaks.union(adata.obs.index)
                 ids_kmers = ids_kmers.union(adata.var.index)
+        if list_PV is not None:
+            for adata_ori in list_PV:
+                if use_top_pcs_PV is None:
+                    flag_top_pcs = use_top_pcs
+                else:
+                    flag_top_pcs = use_top_pcs_PV
+                if flag_top_pcs:
+                    adata = adata_ori[:, adata_ori.var['top_pcs']].copy()
+                else:
+                    adata = adata_ori.copy()
+                ids_peaks = ids_peaks.union(adata.obs.index)
+                ids_variants = ids_variants.union(adata.var.index)
         if list_CG is not None:
             for adata_ori in list_CG:
                 if use_highly_variable:
@@ -446,6 +470,15 @@ def gen_graph(
             settings.pbg_params['entities'][prefix_M] = {'num_partitions': 1}
             entity_alias = pd.concat(
                 [entity_alias, df_motifs],
+                ignore_index=False)
+        if len(ids_variants) > 0:
+            df_variants = pd.DataFrame(
+                index=ids_variants,
+                columns=['alias'],
+                data=[f'{prefix_V}.{x}' for x in range(len(ids_variants))])
+            settings.pbg_params['entities'][prefix_V] = {'num_partitions': 1}
+            entity_alias = pd.concat(
+                [entity_alias, df_variants],
                 ignore_index=False)
 
         # generate edges
@@ -633,7 +666,7 @@ def gen_graph(
                     'source': prefix_P,
                     'destination': prefix_K,
                     'n_edges': df_edges_x.shape[0]}
-
+                
                 id_r += 1
                 df_edges = pd.concat(
                     [df_edges, df_edges_x],
@@ -644,6 +677,67 @@ def gen_graph(
                     df_peaks.loc[adata.obs_names, 'alias'].copy()
                 adata_ori.var.loc[adata.var_names, 'pbg_id'] = \
                     df_kmers.loc[adata.var_names, 'alias'].copy()
+        
+        if list_PV is not None:
+            for i, adata_ori in enumerate(list_PV):
+                if use_top_pcs:
+                    adata = adata_ori[:, adata_ori.var['top_pcs']].copy()
+                else:
+                    adata = adata_ori.copy()
+                if layer is not None:
+                    if layer in adata.layers.keys():
+                        arr_simba = adata.layers[layer]
+                    else:
+                        print(f'`{layer}` does not exist in anndata {i} '
+                              'in `list_PV`.`.X` is being used instead.')
+                        arr_simba = adata.X
+                else:
+                    arr_simba = adata.X
+                _row, _col = arr_simba.nonzero()
+                df_edges_x = pd.DataFrame(columns=col_names)
+                df_edges_x['source'] = df_peaks.loc[
+                    adata.obs_names[_row], 'alias'].values
+                df_edges_x['relation'] = f'r{id_r}'
+                df_edges_x['destination'] = df_variants.loc[
+                    adata.var_names[_col], 'alias'].values
+                if add_edge_weights:
+                    df_edges_x['weight'] = \
+                        arr_simba[_row, _col].A.flatten()
+                    settings.pbg_params['relations'].append({
+                        'name': f'r{id_r}',
+                        'lhs': f'{prefix_P}',
+                        'rhs': f'{prefix_V}',
+                        'operator': 'none',
+                        'weight': 1
+                        })
+                else:
+                    settings.pbg_params['relations'].append({
+                        'name': f'r{id_r}',
+                        'lhs': f'{prefix_P}',
+                        'rhs': f'{prefix_V}',
+                        'operator': 'none',
+                        'weight': 0.02
+                        })
+                print(
+                    f'relation{id_r}: '
+                    f'source: {prefix_P}, '
+                    f'destination: {prefix_V}\n'
+                    f'#edges: {df_edges_x.shape[0]}')
+                dict_graph_stats[f'relation{id_r}'] = {
+                    'source': prefix_P,
+                    'destination': prefix_V,
+                    'n_edges': df_edges_x.shape[0]}
+                
+                id_r += 1
+                df_edges = pd.concat(
+                    [df_edges, df_edges_x],
+                    ignore_index=True)
+                adata_ori.obs['pbg_id'] = ""
+                adata_ori.var['pbg_id'] = ""
+                adata_ori.obs.loc[adata.obs_names, 'pbg_id'] = \
+                    df_peaks.loc[adata.obs_names, 'alias'].copy()
+                adata_ori.var.loc[adata.var_names, 'pbg_id'] = \
+                    df_variants.loc[adata.var_names, 'alias'].copy()
 
         if list_CG is not None:
             for i, adata_ori in enumerate(list_CG):
