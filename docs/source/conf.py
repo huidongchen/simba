@@ -45,6 +45,8 @@ notebooks_v1_1 = [
 ]
 notebooks_v1_2 = [
     "rna_10xpmbc_all_genes_v1.2.ipynb",
+    "rna_10xpmbc_edgeweigts.ipynb",
+    'new_graph_generation.ipynb'
 ]
 for nb in notebooks_v1_0:
     try:
