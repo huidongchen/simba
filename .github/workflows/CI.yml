@@ -26,6 +26,11 @@ jobs:
         create-args: >-
           python=${{ matrix.python-version }}
           simba>=1.1
+          flake8
+          pytest
+          pytest-cov
+    - name: Add micromamba to GITHUB_PATH
+      run: echo "${HOME}/micromamba-bin" >> $GITHUB_PATH
     - name: Install dependencies
       run: |
         # conda config --add channels defaults
@@ -40,14 +45,14 @@ jobs:
         pip install -e .
     - name: Lint with flake8
       run: |
-        mamba install flake8
+        # mamba install flake8
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        mamba install pytest pytest-cov
+        # mamba install pytest pytest-cov
         pytest --cov
     - name: Coverage report
       run: |
