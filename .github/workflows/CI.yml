@@ -22,6 +22,11 @@ jobs:
     #     echo $CONDA/bin >> $GITHUB_PATH
     - uses: mamba-org/setup-micromamba@v1
       with:
+        condarc: |
+          channels:
+            - conda-forge
+            - bioconda
+            - defaults
         environment-name: test-env
         create-args: >-
           python=${{ matrix.python-version }}
