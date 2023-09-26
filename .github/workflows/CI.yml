@@ -46,7 +46,7 @@ jobs:
         # conda install mamba -c conda-forge
         # mamba install "simba>=1.1"
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        # pip install -r requirements.txt
         pip install -e .
     - name: Lint with flake8
       run: |
