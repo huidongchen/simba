@@ -43,6 +43,8 @@ SIMBA is a method to embed cells along with their defining features such as gene
    rna_mouse_atlas
    rna_human_pancreas
    multiome_10xpmbc10k_integration
+   new_graph_generation
+   rna_10xpmbc_edgeweigts
    rna_10x_mouse_brain_1p3M
 
 
