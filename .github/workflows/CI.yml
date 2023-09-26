@@ -27,6 +27,7 @@ jobs:
             - conda-forge
             - bioconda
             - defaults
+        init-shell: bash
         environment-name: test-env
         create-args: >-
           python=${{ matrix.python-version }}
