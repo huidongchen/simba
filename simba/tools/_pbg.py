@@ -229,7 +229,8 @@ def gen_graph(
                         columns=['alias'],
                         data=[f'{prefix_i}.{len(item)+x}'
                               for x in range(len(adt_obs_names))])
-                    dict_ent_type[obs_type] = obs_names.union(adt_obs_names)
+                    dict_ent_type[obs_type] = dict_ent_type[obs_type].union(
+                        adt_obs_names)
                     entity_alias = pd.concat(
                             [entity_alias, entity_alias_obs],
                             ignore_index=False)
@@ -262,7 +263,8 @@ def gen_graph(
                         columns=['alias'],
                         data=[f'{prefix_i}.{len(item)+x}'
                               for x in range(len(adt_var_names))])
-                    dict_ent_type[var_type] = var_names.union(adt_var_names)
+                    dict_ent_type[var_type] = dict_ent_type[var_type].union(
+                        adt_var_names)
                     entity_alias = pd.concat(
                         [entity_alias, entity_alias_var],
                         ignore_index=False)
