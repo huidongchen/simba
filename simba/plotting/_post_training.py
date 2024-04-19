@@ -262,9 +262,7 @@ def entity_metrics(adata_cmp,
                                    'size': text_size})
                          for i in ids]
         adjust_text(plt_texts,
-                    expand_text=text_expand,
-                    expand_points=text_expand,
-                    expand_objects=text_expand,
+                    expand=text_expand,
                     arrowprops=dict(arrowstyle='-', color='black'))
     if show_cutoff:
         ax.axvline(x=cutoff_x, linestyle='--', color='#CE3746')
@@ -693,9 +691,7 @@ def query(adata,
                          for t in texts]
             adjust_text(plt_texts,
                         ax=ax,
-                        expand_text=text_expand,
-                        expand_points=text_expand,
-                        expand_objects=text_expand,
+                        expand=text_expand,
                         arrowprops=dict(arrowstyle='->', color='black'))
     if save_fig:
         fig = plt.gcf()

@@ -770,9 +770,7 @@ def _scatterplot2d(df,
                                                 'size': text_size})
                              for t in texts]
                 adjust_text(plt_texts,
-                            expand_text=text_expand,
-                            expand_points=text_expand,
-                            expand_objects=text_expand,
+                            expand=text_expand,
                             arrowprops=dict(arrowstyle='->', color='black'))
         ax_i.set_xlabel(x)
         ax_i.set_ylabel(y)
