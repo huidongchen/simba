@@ -202,7 +202,7 @@ def gen_graph(
             var_names = adata_ori.var_names
             if len(set(obs_names).intersection(id_ent)) == 0:
                 prefix_i = f'{prefix}{ctr_ent}'
-                id_ent = id_ent.union(adata_ori.obs_names)
+                id_ent = id_ent.union(obs_names)
                 entity_alias_obs = pd.DataFrame(
                     index=obs_names,
                     columns=['alias'],
@@ -214,12 +214,11 @@ def gen_graph(
                 entity_alias = pd.concat(
                         [entity_alias, entity_alias_obs],
                         ignore_index=False)
-                obs_type = prefix_i
                 ctr_ent += 1
             else:
                 for k, item in dict_ent_type.items():
                     if len(set(obs_names).intersection(item)) > 0:
-                        obs_type = k
+                        prefix_i = k
                         break
                 if not set(obs_names).issubset(id_ent):
                     id_ent = id_ent.union(adata_ori.obs_names)
@@ -229,14 +228,16 @@ def gen_graph(
                         columns=['alias'],
                         data=[f'{prefix_i}.{len(item)+x}'
                               for x in range(len(adt_obs_names))])
-                    dict_ent_type[obs_type] = dict_ent_type[obs_type].union(
+                    dict_ent_type[prefix_i] = dict_ent_type[prefix_i].union(
                         adt_obs_names)
                     entity_alias = pd.concat(
                             [entity_alias, entity_alias_obs],
                             ignore_index=False)
+            obs_type = prefix_i
+
             if len(set(var_names).intersection(id_ent)) == 0:
                 prefix_i = f'{prefix}{ctr_ent}'
-                id_ent = id_ent.union(adata_ori.var_names)
+                id_ent = id_ent.union(var_names)
                 entity_alias_var = pd.DataFrame(
                     index=var_names,
                     columns=['alias'],
@@ -248,12 +249,11 @@ def gen_graph(
                 entity_alias = pd.concat(
                     [entity_alias, entity_alias_var],
                     ignore_index=False)
-                var_type = prefix_i
                 ctr_ent += 1
             else:
                 for k, item in dict_ent_type.items():
                     if len(set(var_names).intersection(item)) > 0:
-                        var_type = k
+                        prefix_i = k
                         break
                 if not set(var_names).issubset(id_ent):
                     id_ent = id_ent.union(adata_ori.var_names)
@@ -263,11 +263,12 @@ def gen_graph(
                         columns=['alias'],
                         data=[f'{prefix_i}.{len(item)+x}'
                               for x in range(len(adt_var_names))])
-                    dict_ent_type[var_type] = dict_ent_type[var_type].union(
+                    dict_ent_type[prefix_i] = dict_ent_type[prefix_i].union(
                         adt_var_names)
                     entity_alias = pd.concat(
                         [entity_alias, entity_alias_var],
                         ignore_index=False)
+            var_type = prefix_i
 
             # generate edges
             if layer is not None:
