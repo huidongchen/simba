@@ -609,10 +609,10 @@ def query(adata,
     else:
         color = list(dict.fromkeys(color))  # remove duplicate keys
         for ann in color:
-            if ann in adata.obs_keys():
+            if ann in adata.obs:
                 df_plot[ann] = adata.obs[ann]
                 if not is_numeric_dtype(df_plot[ann]):
-                    if 'color' not in adata.uns_keys():
+                    if 'color' not in adata.uns:
                         adata.uns['color'] = dict()
 
                     if ann not in dict_palette.keys():

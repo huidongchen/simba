@@ -224,10 +224,10 @@ def write_bed(adata,
     if filename is None:
         filename = os.path.join(settings.workdir, 'peaks.bed')
     for x in ['chr', 'start', 'end']:
-        if x not in adata.var_keys():
-            raise ValueError(f"could not find {x} in `adata.var_keys()`")
+        if x not in adata.var:
+            raise ValueError(f"could not find {x} in `adata.var`")
     if use_top_pcs:
-        assert 'top_pcs' in adata.var_keys(), \
+        assert 'top_pcs' in adata.var, \
             "please run `si.pp.select_pcs_features()` first"
         peaks_selected = adata.var[
             adata.var['top_pcs']][['chr', 'start', 'end']]
