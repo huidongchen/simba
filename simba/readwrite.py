@@ -3,18 +3,33 @@
 import os
 import pandas as pd
 import json
-from anndata import (
-    AnnData,
-    read_h5ad,
-    read_csv,
-    read_excel,
-    read_hdf,
-    read_loom,
-    read_mtx,
-    read_text,
-    read_umi_tools,
-    read_zarr,
-)
+from anndata import AnnData
+try:
+    # New anndata
+    from anndata.io import (
+        read_h5ad,
+        read_csv,
+        read_excel,
+        read_hdf,
+        read_loom,
+        read_mtx,
+        read_text,
+        read_umi_tools,
+        read_zarr,
+    )
+except ImportError:
+    # Old anndata fallback
+    from anndata import (
+        read_h5ad,
+        read_csv,
+        read_excel,
+        read_hdf,
+        read_loom,
+        read_mtx,
+        read_text,
+        read_umi_tools,
+        read_zarr,
+    )
 from pathlib import Path
 import tables
 
