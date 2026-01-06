@@ -160,7 +160,7 @@ class GeneScores:
             mask_p = pd.Series(True, index=adata.var_names)
         df_peaks = adata.var[mask_p][['chr', 'start', 'end']].copy()
 
-        if 'gene_scores' not in adata.uns_keys():
+        if 'gene_scores' not in adata.uns:
             print('Gene scores are being calculated for the first time')
             print('`use_precomputed` has been ignored')
             self.use_precomputed = False

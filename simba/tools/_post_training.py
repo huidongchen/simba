@@ -369,7 +369,7 @@ def query(adata,
         <https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.DistanceMetric.html>`__"
     anno_filter : `str`, optional (default: None)
         The annotation of filter to use.
-        It should be one of ``adata.obs_keys()``
+        It should be one of ``adata.obs.columns``
     filters : `list`, optional (default: None)
         The filters to use.
         It should be a list of values in ``adata.obs[anno_filter]``
@@ -440,7 +440,7 @@ def query(adata,
             df_output = pd.concat(
                 [df_output, df_output_ii], ignore_index=False)
         if anno_filter is not None:
-            if anno_filter in adata.obs_keys():
+            if anno_filter in adata.obs:
                 if filters is None:
                     filters = df_output[anno_filter].unique().tolist()
                 df_output.query(f'{anno_filter} == @filters', inplace=True)
@@ -451,7 +451,7 @@ def query(adata,
         # assert (metric in ['euclidean', 'dot_product']),\
         #             "`metric` must be one of ['euclidean','dot_product']"
         if anno_filter is not None:
-            if anno_filter in adata.obs_keys():
+            if anno_filter in adata.obs:
                 if filters is None:
                     filters = adata.obs[anno_filter].unique().tolist()
                 ids_filters = \
@@ -538,7 +538,7 @@ def find_master_regulators(adata_all,
         ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘wminkowski’, ‘yule’.
     anno_filter : `str`, optional (default: None)
         The annotation of filter to use.
-        It should be one of ``adata.obs_keys()``
+        It should be one of ``adata.obs.columns``
     filter_gene : `str`, optional (default: None)
         The filter for gene.
         It should be in ``adata.obs[anno_filter]``
@@ -686,7 +686,7 @@ def find_target_genes(adata_all,
         ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘wminkowski’, ‘yule’.
     anno_filter : `str`, optional (default: None)
         The annotation of filter to use.
-        It should be one of ``adata.obs_keys()``
+        It should be one of ``adata.obs.columns``
     filter_gene : `str`, optional (default: None)
         The filter for gene.
         It should be in ``adata.obs[anno_filter]``
@@ -730,7 +730,7 @@ def find_target_genes(adata_all,
         return np.array([item in b for item in a])
 
     print('Preprocessing ...')
-    if use_precomputed and 'tf_targets' in adata_all.uns_keys():
+    if use_precomputed and 'tf_targets' in adata_all.uns:
         print('importing precomputed variables ...')
         genes = adata_all.uns['tf_targets']['genes']
         peaks = adata_all.uns['tf_targets']['peaks']
@@ -741,7 +741,7 @@ def find_target_genes(adata_all,
         assert (adata_CP is not None), \
             '`adata_CP` needs to be specified '\
             'when no precomputed variable is stored'
-        if 'gene_scores' not in adata_CP.uns_keys():
+        if 'gene_scores' not in adata_CP.uns:
             print('Please run "si.tl.gene_scores(adata_CP)" first.')
         else:
             overlap_PG = adata_CP.uns['gene_scores']['overlap'].copy()

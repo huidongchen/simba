@@ -89,11 +89,11 @@ def violin(adata,
     if list_var is None:
         list_var = []
     for obs in list_obs:
-        if obs not in adata.obs_keys():
-            raise ValueError(f"could not find {obs} in `adata.obs_keys()`")
+        if obs not in adata.obs:
+            raise ValueError(f"could not find {obs} in `adata.obs`")
     for var in list_var:
-        if var not in adata.var_keys():
-            raise ValueError(f"could not find {var} in `adata.var_keys()`")
+        if var not in adata.var:
+            raise ValueError(f"could not find {var} in `adata.var`")
     if len(list_obs) > 0:
         df_plot = adata.obs[list_obs].copy()
         if log:
@@ -234,11 +234,11 @@ def hist(adata,
     if list_var is None:
         list_var = []
     for obs in list_obs:
-        if obs not in adata.obs_keys():
-            raise ValueError(f"could not find {obs} in `adata.obs_keys()`")
+        if obs not in adata.obs:
+            raise ValueError(f"could not find {obs} in `adata.obs`")
     for var in list_var:
-        if var not in adata.var_keys():
-            raise ValueError(f"could not find {var} in `adata.var_keys()`")
+        if var not in adata.var:
+            raise ValueError(f"could not find {var} in `adata.var`")
 
     if len(list_obs) > 0:
         df_plot = adata.obs[list_obs].copy()
@@ -1056,10 +1056,10 @@ def umap(adata,
     else:
         color = list(dict.fromkeys(color))  # remove duplicate keys
         for ann in color:
-            if ann in adata.obs_keys():
+            if ann in adata.obs:
                 df_plot[ann] = adata.obs[ann]
                 if not is_numeric_dtype(df_plot[ann]):
-                    if 'color' not in adata.uns_keys():
+                    if 'color' not in adata.uns:
                         adata.uns['color'] = dict()
 
                     if ann not in dict_palette.keys():
@@ -1178,7 +1178,7 @@ def discretize(adata,
     if fig_path is None:
         fig_path = os.path.join(settings.workdir, 'figures')
 
-    assert 'disc' in adata.uns_keys(), \
+    assert 'disc' in adata.uns, \
         "please run `si.tl.discretize()` first"
     if kde is not None:
         warnings.warn("kde is no longer supported as of v1.1",
@@ -1437,7 +1437,7 @@ def svd_nodes(adata,
     else:
         color = list(dict.fromkeys(color))  # remove duplicate keys
     for ann in color:
-        if (ann in adata.obs_keys()) and (ann in adata.var_keys()):
+        if (ann in adata.obs) and (ann in adata.var):
             df_plot[ann] = pd.concat([adata.obs[ann], adata.var[ann]], axis=0)
             if not is_numeric_dtype(df_plot[ann]):
                 if ann not in dict_palette.keys():

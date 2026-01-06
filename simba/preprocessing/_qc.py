@@ -195,17 +195,17 @@ def filter_samples(adata,
 
     if not issparse(adata.X):
         adata.X = csr_matrix(adata.X)
-    if 'n_counts' in adata.obs_keys():
+    if 'n_counts' in adata.obs:
         n_counts = adata.obs['n_counts']
     else:
         n_counts = np.sum(adata.X, axis=1).A
         adata.obs['n_counts'] = n_counts
-    if 'n_features' in adata.obs_keys():
+    if 'n_features' in adata.obs:
         n_features = adata.obs['n_features']
     else:
         n_features = np.sum(adata.X >= expr_cutoff, axis=1).A1
         adata.obs['n_features'] = n_features
-    if 'pct_features' in adata.obs_keys():
+    if 'pct_features' in adata.obs:
         pct_features = adata.obs['pct_features']
     else:
         pct_features = n_features/adata.shape[1]
@@ -290,18 +290,18 @@ def filter_cells_rna(adata,
 
     if not issparse(adata.X):
         adata.X = csr_matrix(adata.X)
-    if 'n_counts' in adata.obs_keys():
+    if 'n_counts' in adata.obs:
         n_counts = adata.obs['n_counts']
     else:
         n_counts = np.sum(adata.X, axis=1).A1
         adata.obs['n_counts'] = n_counts
 
-    if 'n_genes' in adata.obs_keys():
+    if 'n_genes' in adata.obs:
         n_genes = adata.obs['n_genes']
     else:
         n_genes = np.sum(adata.X >= expr_cutoff, axis=1).A1
         adata.obs['n_genes'] = n_genes
-    if 'pct_genes' in adata.obs_keys():
+    if 'pct_genes' in adata.obs:
         pct_genes = adata.obs['pct_genes']
     else:
         pct_genes = n_genes/adata.shape[1]
@@ -386,18 +386,18 @@ def filter_cells_atac(adata,
 
     if not issparse(adata.X):
         adata.X = csr_matrix(adata.X)
-    if 'n_counts' in adata.obs_keys():
+    if 'n_counts' in adata.obs:
         n_counts = adata.obs['n_counts']
     else:
         n_counts = np.sum(adata.X, axis=1).A1
         adata.obs['n_counts'] = n_counts
 
-    if 'n_peaks' in adata.obs_keys():
+    if 'n_peaks' in adata.obs:
         n_peaks = adata.obs['n_peaks']
     else:
         n_peaks = np.sum(adata.X >= expr_cutoff, axis=1).A1
         adata.obs['n_peaks'] = n_peaks
-    if 'pct_peaks' in adata.obs_keys():
+    if 'pct_peaks' in adata.obs:
         pct_peaks = adata.obs['pct_peaks']
     else:
         pct_peaks = n_peaks/adata.shape[1]
@@ -481,17 +481,17 @@ def filter_genes(adata,
     if not issparse(adata.X):
         adata.X = csr_matrix(adata.X)
 
-    if 'n_counts' in adata.var_keys():
+    if 'n_counts' in adata.var:
         n_counts = adata.var['n_counts']
     else:
         n_counts = np.sum(adata.X, axis=0).A1
         adata.var['n_counts'] = n_counts
-    if 'n_cells' in adata.var_keys():
+    if 'n_cells' in adata.var:
         n_cells = adata.var['n_cells']
     else:
         n_cells = np.sum(adata.X >= expr_cutoff, axis=0).A1
         adata.var['n_cells'] = n_cells
-    if 'pct_cells' in adata.var_keys():
+    if 'pct_cells' in adata.var:
         pct_cells = adata.var['pct_cells']
     else:
         pct_cells = n_cells/adata.shape[0]
@@ -572,17 +572,17 @@ def filter_peaks(adata,
     if not issparse(adata.X):
         adata.X = csr_matrix(adata.X)
 
-    if 'n_counts' in adata.var_keys():
+    if 'n_counts' in adata.var:
         n_counts = adata.var['n_counts']
     else:
         n_counts = np.sum(adata.X, axis=0).A1
         adata.var['n_counts'] = n_counts
-    if 'n_cells' in adata.var_keys():
+    if 'n_cells' in adata.var:
         n_cells = adata.var['n_cells']
     else:
         n_cells = np.sum(adata.X >= expr_cutoff, axis=0).A1
         adata.var['n_cells'] = n_cells
-    if 'pct_cells' in adata.var_keys():
+    if 'pct_cells' in adata.var:
         pct_cells = adata.var['pct_cells']
     else:
         pct_cells = n_cells/adata.shape[0]
@@ -661,17 +661,17 @@ def filter_features(adata,
 
     if not issparse(adata.X):
         adata.X = csr_matrix(adata.X)
-    if 'n_counts' in adata.var_keys():
+    if 'n_counts' in adata.var:
         n_counts = adata.var['n_counts']
     else:
         n_counts = np.sum(adata.X, axis=0).A1
         adata.var['n_counts'] = n_counts
-    if 'n_samples' in adata.var_keys():
+    if 'n_samples' in adata.var:
         n_samples = adata.var['n_samples']
     else:
         n_samples = np.sum(adata.X >= expr_cutoff, axis=0).A1
         adata.var['n_samples'] = n_samples
-    if 'pct_samples' in adata.var_keys():
+    if 'pct_samples' in adata.var:
         pct_samples = adata.var['pct_samples']
     else:
         pct_samples = n_samples/adata.shape[0]
